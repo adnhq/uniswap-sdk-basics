@@ -17,17 +17,17 @@ async function init() {
     const usdt = await Fetcher.fetchTokenData(chainId, tetherAddress);
     const wbtc = await Fetcher.fetchTokenData(chainId, wbtcAddress);
     const weth = WETH[chainId];
-    const pair1 = await Fetcher.fetchPairData(wbtc, weth);
-    const pair2 = await Fetcher.fetchPairData(weth, usdt);
-    const route = new Route([pair1, pair2], wbtc);
+    const pair1 = await Fetcher.fetchPairData(weth, wbtc);
+    const pair2 = await Fetcher.fetchPairData(wbtc, usdt);
+    const route = new Route([pair1, pair2], weth);
     const trade = new Trade(
         route,
-        new TokenAmount(wbtc, "100000000"),
+        new TokenAmount(weth, "1000000000000000000"),
         TradeType.EXACT_INPUT
     );
     const slippageTolerance = new Percent("50", "1000"); //50 bips ie. 0.5% tolerance
     const minOutAmount = trade.minimumAmountOut(slippageTolerance).raw;
-    const path = [wbtc.address, weth.address, usdt.address];
+    const path = [weth.address, wbtc.address, usdt.address];
     const to = "";
     const deadline = Math.floor(Date.now() / 1000) + 5 * 60;
     const value = trade.inputAmount.raw;
